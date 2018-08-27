@@ -9,9 +9,10 @@ app.get('/', function (req, res) {
 app.use(express.static(path.join(__dirname, 'public')));
 app.get('/ashish', function(req,res){
 	console.log('ashish');
-	res.sendFile('abc.html');
+	res.sendFile(__dirname + 'abc.html');
 	console.log('sharma');
 })
 
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
+
 
