@@ -1,16 +1,16 @@
-const express = require('express')
-const path = require('path')
-const PORT = process.env.PORT || 5000
- var app = express();
-express()
-  .use(express.static(path.join(__dirname, 'public')))
-  .get('/',function(req,res){
-     res.sendFile('index.html');
-})
-  .listen(PORT, () => console.log(`Listening on ${ PORT }`))
+var express = require('express');
+var app = express();
 
-app.get('/ashish', function(req,res){
-	console.log('ashish');
-	res.sendFile('abc.html');
-	console.log('sharma');
+app.use(express.static(path.join(__dirname, 'public')));
+app.get('/', function (req, res) {
+   res.send('Hello World');
 })
+
+var server = app.listen(8081, function () {
+   var host = server.address().address
+   var port = server.address().port
+   
+   console.log("Example app listening at http://%s:%s", host, port)
+})
+
+
