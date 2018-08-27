@@ -62,6 +62,17 @@
   </div>
 </div>
 
+<script type="text/javascript">
+  if (!('serviceWorker' in navigator)) {
+  console.log('Service Worker isnt supported on this browser, disable or hide UI.');
+  return;
+}
 
+if (!('PushManager' in window)) {
+    console.log('Service Worker isnt supported on this browser, disable or hide UI.');
+  return;
+}
+console.log('Service worker is supported');
+</script>
 </body>
 </html>
