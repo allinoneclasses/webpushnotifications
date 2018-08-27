@@ -8,3 +8,7 @@ express()
      res.sendFile('index.html');
 })
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
+
+express().get('/ashish', function(req,res){
+	res.sendFile('abc.html');
+})
