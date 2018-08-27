@@ -10,5 +10,7 @@ express()
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
 app.get('/ashish', function(req,res){
+	console.log('ashish');
 	res.sendFile('abc.html');
+	console.log('sharma');
 })
