@@ -9,7 +9,7 @@ app.get('/ashish', function (req, res) {
 app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', function(req,res){
 	console.log(__dirname);
-	res.sendFile('index.js');
+	res.sendFile('index.html');
 	console.log('sharma');
 })
 
