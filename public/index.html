@@ -4,7 +4,7 @@
 
 </head>
 
-<body>
+<body onload="checkStatus()">
 
 
 
@@ -63,6 +63,7 @@
 </div>
 
 <script type="text/javascript">
+  function checkStatus() {
   if (!('serviceWorker' in navigator)) {
   console.log('Service Worker isnt supported on this browser, disable or hide UI.');
   return;
@@ -73,6 +74,7 @@ if (!('PushManager' in window)) {
   return;
 }
 console.log('Service worker is supported');
+}
 </script>
 </body>
 </html>
