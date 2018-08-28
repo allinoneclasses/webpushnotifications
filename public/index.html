@@ -82,10 +82,29 @@ function registerServiceWorker() {
   .then(function(registration) {
     console.log('Service worker successfully registered.');
     askPermission();
+    subscribeUserToPush();
     return registration;
   })
   .catch(function(err) {
     console.error('Unable to register service worker.', err);
+  });
+}
+
+function subscribeUserToPush() {
+  return navigator.serviceWorker.register('service-worker.js')
+  .then(function(registration) {
+    const subscribeOptions = {
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(
+        'BIY6zwhkwWk68u5Xzh_NYKwEzsEpOLsSSEdxDHLZWaGWEQOvAWpZ8iJJEqJof2y6BnIxNrPFo4v3tGO4wbkyywY'
+      )
+    };
+
+    return registration.pushManager.subscribe(subscribeOptions);
+  })
+  .then(function(pushSubscription) {
+    console.log('Received PushSubscription: ', JSON.stringify(pushSubscription));
+    return pushSubscription;
   });
 }
 
