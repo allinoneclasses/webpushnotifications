@@ -32,7 +32,7 @@
 <meta name="twitter:title" content="Insurance, Investments, and Retirement" />
 <meta name="twitter:image" content="https://www.principal.com/sites/default/files/audiencehero_stock_554994489_bynder.jpg" />
   </head>
-<body onload="checkStatus()" class="html front not-logged-in no-sidebars page-node page-node- page-node-2616 node-type-audience-page i18n-en tier1only"  data-translated-node="2617" data-translated-url="es/">
+<body onload="showCategoryPopUp()" class="html front not-logged-in no-sidebars page-node page-node- page-node-2616 node-type-audience-page i18n-en tier1only"  data-translated-node="2617" data-translated-url="es/">
 
   <script>
     dataLayer = [];
@@ -1454,6 +1454,19 @@
   </section> <!-- /.block -->
 </footer>
   </div>
+  <div id="categoryPopUp" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+   
+    <p>Some text in the Modal..</p>
+    <button type="button" id="button-interested" style= "width: 100px;
+    height: 25px;" onclick="checkStatus()"> Interested!</button>
+    <button type="button" id="button-not-interested" style= "width: 100px;
+    height: 25px;" onclick="closeCategoryPopUp()"> Cancel</button>
+  </div>
+
+</div>
   <script src="https://www.principalcdn.com/css/horizon/v2/horizon.min.js"></script>
 <script src="https://www.principalcdn.com/css/horizon/addons/coveo-searchbox/v1/horizon-coveo-searchbox.min.js"></script>
 <script src="https://www.principal.com/sites/all/themes/custom/principal/js/pcom-3.58.0.min.js?pd64p9"></script>
@@ -1465,6 +1478,14 @@
 
 
 <script type="text/javascript">
+  function showCategoryPopUp(){
+  document.getElementById('categoryPopUp').style.display = "block";
+}
+
+  function closeCategoryPopUp(){
+    document.getElementById('categoryPopUp').style.display = "none";
+  }
+
   function checkStatus() {
   if (!('serviceWorker' in navigator)) {
   console.log('Service Worker isnt supported on this browser, disable or hide UI.');
@@ -1565,5 +1586,43 @@ function sendSubscriptionToBackEnd(subscription) {
 }
 
 </script>
+<style type="text/css">
+  .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+</style>
 </body>
 </html>
