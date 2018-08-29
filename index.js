@@ -56,15 +56,16 @@ const triggerPushMsg = function(subscription, dataToSend) {
 
   
 app.post('/api/save-subscription/', function (req, res) {
-  console.log('Inside save subscription2: ', req.body);
-  var subscription = {endpoint: req.body.subscription2.endpoint , keys: req.body.subscription2.keys, auth: req.body.subscription2.auth};
-  var categories = req.body.categories;
+  console.log('Inside save subscription2: ');
   var endpoint = req.body.subscription2.endpoint;
   var stringParts = endpoint.split("/");
   var browser_id = stringParts[5];
-  console.log("browser id: " , browser_id);
-  console.log("body: ", subscription);
-  console.log("cat: ", categories);
+  var subscription = {endpoint: req.body.subscription2.endpoint , keys: req.body.subscription2.keys, auth: req.body.subscription2.auth};
+  var categories = {browser_id: browser_id, categories: req.body.categories};
+  
+  console.log("subscription: ", subscription);
+  console.log("categories: ", categories);
+
   saveSubscriptionToDatabase(subscription);
 
     res.setHeader('Content-Type', 'application/json');
