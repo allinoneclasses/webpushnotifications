@@ -1582,7 +1582,8 @@ function askPermission() {
 
 
 function sendSubscriptionToBackEnd(subscription) {
-  console.log('stringify: ' +JSON.stringify(subscription) + ", 'abcd':'123'");
+  var subs = {subscription2:subscription, category: "abc"};
+  console.log('stringify: ' +JSON.stringify(subs));
   return fetch('/api/save-subscription/', {
     method: 'POST',
     headers: {
