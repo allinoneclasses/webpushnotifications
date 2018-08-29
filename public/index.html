@@ -1582,7 +1582,7 @@ function askPermission() {
 
 
 function sendSubscriptionToBackEnd(subscription) {
-  log('stringify: ' +JSON.stringify(subscription));
+  console.log('stringify: ' +JSON.stringify(subscription));
   return fetch('/api/save-subscription/', {
     method: 'POST',
     headers: {
