@@ -1489,9 +1489,8 @@
         selectedCategories.push(checkboxes[i].defaultValue);
      }
   }
-  console.log(selectedCategories);
   document.getElementById('categoryPopUp').style.display = "none";
-  checkStatus();
+  checkStatus(selectedCategories);
 }
     
   function showCategoryPopUp(){
@@ -1502,7 +1501,7 @@
     document.getElementById('categoryPopUp').style.display = "none";
   }
 
-  function checkStatus() {
+  function checkStatus(selectedCategories) {
   if (!('serviceWorker' in navigator)) {
   console.log('Service Worker isnt supported on this browser, disable or hide UI.');
   return;
@@ -1513,16 +1512,16 @@ if (!('PushManager' in window)) {
   return;
 }
 console.log('Service worker is supported');
-registerServiceWorker();
+registerServiceWorker(selectedCategories);
 
 }
-function registerServiceWorker() {
+function registerServiceWorker(selectedCategories) {
   console.log('Inside register service worker');
   return navigator.serviceWorker.register('service-worker.js')
   .then(function(registration) {
     console.log('Service worker successfully registered.');
     askPermission();
-    subscribeUserToPush();
+    subscribeUserToPush(selectedCategories);
     return registration;
   })
   .catch(function(err) {
@@ -1541,7 +1540,7 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 
-function subscribeUserToPush() {
+function subscribeUserToPush(selectedCategories) {
   return navigator.serviceWorker.register('service-worker.js')
   .then(function(registration) {
     const subscribeOptions = {
@@ -1554,7 +1553,7 @@ function subscribeUserToPush() {
     return registration.pushManager.subscribe(subscribeOptions);
   })
   .then(function(pushSubscription) {
-    sendSubscriptionToBackEnd(pushSubscription);
+    sendSubscriptionToBackEnd(pushSubscription, selectedCategories);
     console.log('Received PushSubscription: ', JSON.stringify(pushSubscription));
     return pushSubscription;
   });
@@ -1581,9 +1580,8 @@ function askPermission() {
 
 
 
-function sendSubscriptionToBackEnd(subscription) {
-  var subs = {subscription2:subscription, category: "abc"};
-  console.log('stringify: ' +JSON.stringify(subs));
+function sendSubscriptionToBackEnd(subscription, selectedCategories) {
+  var subs = {subscription2:subscription, categories:selectedCategories};
   return fetch('/api/save-subscription/', {
     method: 'POST',
     headers: {
