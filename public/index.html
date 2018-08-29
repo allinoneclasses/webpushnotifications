@@ -1459,9 +1459,12 @@
   <!-- Modal content -->
   <div class="modal-content">
    
-    <p>Some text in the Modal..</p>
+    <p>Please check all categories for which you'd like to be notified about... </p>
+    <input type="checkbox" name="category" value="retirement"> Retirement & Investor Services<br>
+    <input type="checkbox" name="category" value="life"> Life<br>
+    <input type="checkbox" name="category" value="sbd"> Speciality Benifits Division<br> <br><br>
     <button type="button" id="button-interested" style= "width: 100px;
-    height: 25px;" onclick="checkStatus()"> Interested!</button>
+    height: 25px;" onclick="saveSelectedCategories()"> Interested!</button>
     <button type="button" id="button-not-interested" style= "width: 100px;
     height: 25px;" onclick="closeCategoryPopUp()"> Cancel</button>
   </div>
@@ -1478,6 +1481,19 @@
 
 
 <script type="text/javascript">
+  function saveSelectedCategories(){
+  var checkboxes = document.getElementsByName('category');
+  var selectedCategories = [];
+  // loop over them all
+  for (var i=0; i<checkboxes.length; i++) {
+     // And stick the checked ones onto an array...
+     if (checkboxes[i].checked) {
+        selectedCategories.push(checkboxes[i].defaultValue);
+     }
+  }
+  console.log(selectedCategories);
+}
+    
   function showCategoryPopUp(){
   document.getElementById('categoryPopUp').style.display = "block";
 }
