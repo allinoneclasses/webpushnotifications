@@ -59,6 +59,10 @@ app.post('/api/save-subscription/', function (req, res) {
   console.log('Inside save subscription2: ', req.body);
   var subscription = {endpoint: req.body.subscription2.endpoint , keys: req.body.subscription2.keys, auth: req.body.subscription2.auth};
   var categories = req.body.categories;
+  var endpoint = req.body.subscription2.endpoint;
+  var stringParts = endpoint.split("/");
+  var browser_id = stringParts[5];
+  console.log("browser id: " , browser_id);
   console.log("body: ", subscription);
   console.log("cat: ", categories);
   saveSubscriptionToDatabase(subscription);
