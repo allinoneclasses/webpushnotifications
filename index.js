@@ -58,7 +58,7 @@ const triggerPushMsg = function(subscription, dataToSend) {
 app.post('/api/save-subscription/', function (req, res) {
   console.log('Inside save subscription2');
   var subscription = {endpoint: req.body.endpoint , keys: req.body.keys, auth: req.body.auth};
-  var categories = re.body.categories;
+  var categories = req.body.categories;
   console.log("body: ", subscription);
   console.log("cat: ", categories);
   saveSubscriptionToDatabase(subscription);
