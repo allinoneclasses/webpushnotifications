@@ -20,7 +20,7 @@ app.get('/', function(req,res){
 app.post('/api/save-subscription/', function (req, res) {
   console.log('Inside save subscription');
   saveSubscriptionToDatabase(req.body);
-  res.send(JSON.stringify({ data: { success: true } });
+  res.send(JSON.stringify({ data: { success: true } }));
  /* return routes.saveSubscriptionToDatabase(req.body)
   .then(function(subscriptionId) {
     res.setHeader('Content-Type', 'application/json');
