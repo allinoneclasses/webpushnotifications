@@ -1553,8 +1553,9 @@ function subscribeUserToPush(selectedCategories) {
 
     return registration.pushManager.subscribe(subscribeOptions, selectedCategories);
   })
-  .then(function(pushSubscription, selectedCategories) {
-    sendSubscriptionToBackEnd(pushSubscription, selectedCategories);
+  .then(function(pushSubscription) {
+    console.log("pushSubscription: " + pushSubscription);
+    sendSubscriptionToBackEnd(pushSubscription+ ", selectedCategories: "+ selectedCategories);
     console.log('Received PushSubscription: ', JSON.stringify(pushSubscription));
     return pushSubscription;
   });
@@ -1581,13 +1582,13 @@ function askPermission() {
 
 
 
-function sendSubscriptionToBackEnd(subscription, selectedCategories) {
+function sendSubscriptionToBackEnd(subscription) {
   return fetch('/api/save-subscription/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(subscription + ", selectedCategories: "+ selectedCategories)
+    body: JSON.stringify(subscription)
   })
   .then(function(response) {
     if (!response.ok) {
