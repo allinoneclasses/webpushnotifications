@@ -60,7 +60,7 @@ app.post('/api/save-subscription/', function (req, res) {
   var endpoint = req.body.subscription2.endpoint;
   var stringParts = endpoint.split("/");
   var browser_id = stringParts[5];
-  var subscription = {endpoint: req.body.subscription2.endpoint , keys: req.body.subscription2.keys, auth: req.body.subscription2.auth};
+  var subscription = {endpoint: req.body.subscription2.endpoint , keys: req.body.subscription2.keys};
   var categories = {browser_id: browser_id, categories: req.body.categories};
   
   console.log("subscription: ", subscription);
