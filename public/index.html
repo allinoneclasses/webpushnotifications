@@ -1549,13 +1549,12 @@ function subscribeUserToPush(selectedCategories) {
       applicationServerKey: urlBase64ToUint8Array(
         'BIY6zwhkwWk68u5Xzh_NYKwEzsEpOLsSSEdxDHLZWaGWEQOvAWpZ8iJJEqJof2y6BnIxNrPFo4v3tGO4wbkyywY'
       ),
-      categories: selectedCategories
     };
 
-    return registration.pushManager.subscribe(subscribeOptions);
+    return registration.pushManager.subscribe(subscribeOptions, selectedCategories);
   })
-  .then(function(pushSubscription) {
-    sendSubscriptionToBackEnd(pushSubscription);
+  .then(function(pushSubscription, selectedCategories) {
+    sendSubscriptionToBackEnd(pushSubscription, selectedCategories);
     console.log('Received PushSubscription: ', JSON.stringify(pushSubscription));
     return pushSubscription;
   });
@@ -1582,13 +1581,13 @@ function askPermission() {
 
 
 
-function sendSubscriptionToBackEnd(subscription) {
+function sendSubscriptionToBackEnd(subscription, selectedCategories) {
   return fetch('/api/save-subscription/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(subscription)
+    body: JSON.stringify(subscription + ", selectedCategories: "+ selectedCategories)
   })
   .then(function(response) {
     if (!response.ok) {
