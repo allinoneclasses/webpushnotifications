@@ -1,6 +1,14 @@
 var express = require('express');
 var app = express();
 var routes = require('./routes');
+var bodyParser = require('body-parser')
+const webpush = require('web-push');
+
+const vapidKeys = {
+  publicKey:
+  'BIY6zwhkwWk68u5Xzh_NYKwEzsEpOLsSSEdxDHLZWaGWEQOvAWpZ8iJJEqJof2y6BnIxNrPFo4v3tGO4wbkyywY',
+  privateKey: 'Flu-wiv4hfQy-astZyx9_pykQt_54QpQJWQqm3QoQVw'
+};
 
 const path = require('path');
 const PORT = process.env.PORT || 5000
@@ -9,6 +17,7 @@ app.get('/ashish', function (req, res) {
 })
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json())
 app.get('/', function(req,res){
 	console.log(__dirname);
 	console.log('Inside app.get method');
@@ -16,12 +25,45 @@ app.get('/', function(req,res){
 	console.log('sharma');
 })
 
+function saveSubscriptionToDatabase(body) {
+  console.log('subscription received5689', body);
+  webpush.setVapidDetails(
+  'mailto:ashishrsharma2@gmail.com',
+  vapidKeys.publicKey,
+  vapidKeys.privateKey
+);
 
+  console.log(body);
+  triggerPushMsg(body, 'Test Dataasd');
+  return 123;
+}
+
+const triggerPushMsg = function(subscription, dataToSend) {
+  console.log('Data to send', dataToSend);
+  return webpush.sendNotification(subscription, dataToSend)
+  .then(function abc(){
+    console.log('data successfully sent to push message services');
+  })
+  .catch((err) => {
+    if (err.statusCode === 410) {
+     // return deleteSubscriptionFromDatabase(subscription._id);
+    } else {
+      console.log('Subscription is no longer valid: ', err);
+    }
+  });
+};
+
+
+  
 app.post('/api/save-subscription/', function (req, res) {
-  console.log('Inside save subscription');
-  console.log('req  ', req.body);
-  //saveSubscriptionToDatabase(req.body);
-  res.send(JSON.stringify({ data: { success: true } }));
+  console.log('Inside save subscription2');
+  console.log("req body: " + req.body);
+  saveSubscriptionToDatabase(req.body);
+
+    res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify({ data: { success: true } }));
+
+ // res.send(JSON.stringify({ data: { success: true } }));
  /* return routes.saveSubscriptionToDatabase(req.body)
   .then(function(subscriptionId) {
     res.setHeader('Content-Type', 'application/json');
@@ -39,5 +81,3 @@ app.post('/api/save-subscription/', function (req, res) {
   });*/
 });
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
-
-
