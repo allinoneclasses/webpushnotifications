@@ -1582,12 +1582,13 @@ function askPermission() {
 
 
 function sendSubscriptionToBackEnd(subscription) {
+  log('stringify: ' +JSON.stringify(subscription));
   return fetch('/api/save-subscription/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(subscription + "abcd") 
+    body: JSON.stringify(subscription) 
   })
   .then(function(response) {
     if (!response.ok) {
