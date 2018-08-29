@@ -90,19 +90,14 @@ function registerServiceWorker() {
   });
 }
 
-function urlB64ToUint8Array(base64String) {
+function urlBase64ToUint8Array(base64String) {
   const padding = '='.repeat((4 - base64String.length % 4) % 4);
   const base64 = (base64String + padding)
     .replace(/\-/g, '+')
-    .replace(/_/g, '/');
-
+    .replace(/_/g, '/')
+  ;
   const rawData = window.atob(base64);
-  const outputArray = new Uint8Array(rawData.length);
-
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i);
-  }
-  return outputArray;
+  return Uint8Array.from([...rawData].map((char) => char.charCodeAt(0)));
 }
 
 function subscribeUserToPush() {
@@ -111,13 +106,14 @@ function subscribeUserToPush() {
     const subscribeOptions = {
       userVisibleOnly: true,
       applicationServerKey: urlBase64ToUint8Array(
-        'BIY6zwhkwWk68u5Xzh_NYKwEzsEpOLsSSEdxDHLZWaGWEQOvAWpZ8iJJEqJof2y6BnIxNrPFo4v3tGO4wbkyywY'
+        'BFxJHOL11hXZ6FlS27GI9R4idwWeT0R4QDlBeVLzculimGR9UE52iDKUn02-ez8-4ZFl5f2DqO-M19K8J_deYLc'
       )
     };
 
     return registration.pushManager.subscribe(subscribeOptions);
   })
   .then(function(pushSubscription) {
+    sendSubscriptionToBackEnd(pushSubscription);
     console.log('Received PushSubscription: ', JSON.stringify(pushSubscription));
     return pushSubscription;
   });
@@ -140,6 +136,31 @@ function askPermission() {
     }
   });
 }
+
+
+
+function sendSubscriptionToBackEnd(subscription) {
+  return fetch('/api/save-subscription/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(subscription)
+  })
+  .then(function(response) {
+    if (!response.ok) {
+      throw new Error('Bad status code from server.');
+    }
+
+    return response.json();
+  })
+  .then(function(responseData) {
+    if (!(responseData.data && responseData.data.success)) {
+      throw new Error('Bad response from server.');
+    }
+  });
+}
+
 </script>
 </body>
 </html>
