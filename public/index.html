@@ -1484,16 +1484,14 @@
   function saveSelectedCategories(){
   var checkboxes = document.getElementsByName('category');
   var selectedCategories = [];
-  // loop over them all
   for (var i=0; i<checkboxes.length; i++) {
-     // And stick the checked ones onto an array...
      if (checkboxes[i].checked) {
         selectedCategories.push(checkboxes[i].defaultValue);
      }
   }
   console.log(selectedCategories);
   document.getElementById('categoryPopUp').style.display = "none";
-  checkStatus();
+  checkStatus(selectedCategories);
 }
     
   function showCategoryPopUp(){
@@ -1504,7 +1502,7 @@
     document.getElementById('categoryPopUp').style.display = "none";
   }
 
-  function checkStatus() {
+  function checkStatus(selectedCategories) {
   if (!('serviceWorker' in navigator)) {
   console.log('Service Worker isnt supported on this browser, disable or hide UI.');
   return;
@@ -1515,16 +1513,16 @@ if (!('PushManager' in window)) {
   return;
 }
 console.log('Service worker is supported');
-registerServiceWorker();
+registerServiceWorker(selectedCategories);
 
 }
-function registerServiceWorker() {
+function registerServiceWorker(selectedCategories) {
   console.log('Inside register service worker');
   return navigator.serviceWorker.register('service-worker.js')
   .then(function(registration) {
     console.log('Service worker successfully registered.');
     askPermission();
-    subscribeUserToPush();
+    subscribeUserToPush(selectedCategories);
     return registration;
   })
   .catch(function(err) {
@@ -1543,14 +1541,15 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 
-function subscribeUserToPush() {
+function subscribeUserToPush(selectedCategories) {
   return navigator.serviceWorker.register('service-worker.js')
   .then(function(registration) {
     const subscribeOptions = {
       userVisibleOnly: true,
       applicationServerKey: urlBase64ToUint8Array(
         'BIY6zwhkwWk68u5Xzh_NYKwEzsEpOLsSSEdxDHLZWaGWEQOvAWpZ8iJJEqJof2y6BnIxNrPFo4v3tGO4wbkyywY'
-      )
+      ),
+      categories: selectedCategories
     };
 
     return registration.pushManager.subscribe(subscribeOptions);
@@ -1575,6 +1574,7 @@ function askPermission() {
   })
   .then(function(permissionResult) {
     if (permissionResult !== 'granted') {
+
       throw new Error('We weren\'t granted permission.');
     }
   });
