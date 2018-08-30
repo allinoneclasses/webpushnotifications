@@ -107,20 +107,19 @@ function retrievefromDBBasedOn(req) {
   const myAwesomeDB = db.db('subscription-datastore');
 
   console.log('Inside retrieve DB');
- // var cursor  = collection('Subscription').find();
-
-  var cursor = myAwesomeDB.collection('Subscription').find({"categories" : {"$in": ["sbd"]}});
+  console.log(req.category);
+  var cursor = myAwesomeDB.collection('Subscription').find({"categories" : {"$in": [req.category]}});
   cursor.each(function(err, doc){
     if(doc){
       console.log("finding data");
       console.log(doc);
       var data = JSON.parse(JSON.stringify(doc));
       console.log("Sending message to " + doc.subscription.endpoint);
-      var subscription;
-      if(doc.subscription){
-        subscription = doc.subscription;
-        triggerPushMsg(subscription, req.message);
-      }
+      // var subscription;
+      // if(doc.subscription){
+        // subscription = doc.subscription;
+        triggerPushMsg(doc.subscription, req.message);
+      // }
     console.log("data found");
     }
   });
