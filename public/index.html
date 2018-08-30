@@ -1492,6 +1492,9 @@
         selectedCategories.push(checkboxes[i].defaultValue);
      }
   }
+  if(selectedCategories.length == 0){
+    selectedCategories[0] = 'general';
+  }
   document.getElementById('categoryPopUp').style.display = "none";
   checkStatus(selectedCategories);
 }
