@@ -22,10 +22,10 @@ app.get('/ashish', function (req, res) {
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json())
 app.get('/', function(req,res){
-	console.log(__dirname);
-	console.log('Inside app.get method');
-	res.sendFile('index.html');
-	console.log('sharma');
+  console.log(__dirname);
+  console.log('Inside app.get method');
+  res.sendFile('index.html');
+  console.log('sharma');
 })
 
 function savetoMongoDB(body) {
@@ -114,11 +114,11 @@ function retrievefromDBBasedOn(req) {
       console.log("finding data");
       console.log(doc);
       var data = JSON.parse(JSON.stringify(doc));
-      console.log("Sending message to " + doc.subscription.endpoint);
+      console.log("Sending message to " + doc);
       // var subscription;
       // if(doc.subscription){
         // subscription = doc.subscription;
-        triggerPushMsg(doc.subscription, req.message);
+        triggerPushMsg(doc, req.message);
       // }
     console.log("data found");
     }
@@ -189,5 +189,3 @@ app.post('/api/save-subscription/', function (req, res) {
   });*/
 });
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
-
-
