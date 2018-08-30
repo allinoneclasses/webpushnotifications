@@ -6,7 +6,9 @@ self.addEventListener('push', function(event) {
   }
   const title = 'Simple Title';
     const options = {
-      body: event.data.text()
+      body: event.data.text(),
+      badge: '/principal-logo.png',
+      icon: '/principal-logo.png'
     };
 	const promiseChain = self.registration.showNotification(title,options);
 
