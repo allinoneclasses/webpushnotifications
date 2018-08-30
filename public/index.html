@@ -1517,7 +1517,7 @@ function permissionQuery(result) {
        console.log('granted');
 
     } else if (result.state == 'prompt') {
-         console.log('prompt');
+         document.getElementById('categoryPopUp').style.display = "block";
 
     } else if (result.state == 'denied') {
         console.log('naah');
