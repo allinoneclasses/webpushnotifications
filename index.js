@@ -22,10 +22,10 @@ app.get('/ashish', function (req, res) {
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json())
 app.get('/', function(req,res){
-  console.log(__dirname);
-  console.log('Inside app.get method');
-  res.sendFile('index.html');
-  console.log('sharma');
+	console.log(__dirname);
+	console.log('Inside app.get method');
+	res.sendFile('index.html');
+	console.log('sharma');
 })
 
 function savetoMongoDB(body) {
@@ -38,12 +38,34 @@ function savetoMongoDB(body) {
   const myAwesomeDB = db.db('subscription-datastore');
 
 
-  console.log(body);
-  myAwesomeDB.collection('Subscription').insertOne(body, function(err, res) {
+  console.log(body.subscription);
+  console.log(body.userPreferences);
+  var data = body.subscription;
+  var userPreferences = body.userPreferences;
+
+  var objectId;
+ myAwesomeDB.collection('Subscription').insertOne(data, function(err, res) {
     if (err) throw err;
     console.log("1 document inserted");
+    console.log("object id - " , data._id);
+    objectId = data._id;
+
+console.log("objectId - " , objectId);
+ var newData = {ref_id : objectId, userPreferences:userPreferences};
+  console.log("new data - " , newData);
+ myAwesomeDB.collection('UserPreferences').insertOne(newData, function(err, res) {
+    if (err) throw err;
+    console.log("1 document inserted");
+    console.log("object id - " , data._id);
+    objectId = data._id;
     db.close();
   });
+
+
+  });
+
+
+
 });
  // res.send(JSON.stringify({ data: { success: true } }));
 
@@ -108,18 +130,27 @@ function retrievefromDBBasedOn(req) {
 
   console.log('Inside retrieve DB');
   console.log(req.category);
-  var cursor = myAwesomeDB.collection('Subscription').find({"categories" : {"$in": [req.category]}});
+  var cursor = myAwesomeDB.collection('UserPreferences').find({"userPreferences.categories" : {"$in": [req.category]}});
   cursor.each(function(err, doc){
     if(doc){
       console.log("finding data");
-      console.log(doc);
-      var data = JSON.parse(JSON.stringify(doc));
-      console.log("Sending message to " + doc);
+      
+      // var data = JSON.parse(JSON.stringify(doc));
+      // console.log("Sending message to " + doc);
+      console.log(doc.ref_id);
       // var subscription;
       // if(doc.subscription){
         // subscription = doc.subscription;
-        triggerPushMsg(doc, req.message);
+        // triggerPushMsg(doc, req.message);
       // }
+      var cursor = myAwesomeDB.collection('Subscription').find({"_id" : {"$in": [doc.ref_id]}});
+  cursor.each(function(err, doc){
+    if(doc){
+console.log("finding data");
+console.log("data" , doc);
+triggerPushMsg(doc, req.message);
+}
+});
     console.log("data found");
     }
   });
@@ -189,3 +220,5 @@ app.post('/api/save-subscription/', function (req, res) {
   });*/
 });
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
+
+
