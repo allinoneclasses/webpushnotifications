@@ -1583,7 +1583,7 @@ function askPermission() {
 
 
 function sendSubscriptionToBackEnd(subscription, selectedCategories) {
-  var subs = {subscription2:subscription, categories:selectedCategories};
+  var subs = {subscription:subscription, categories:selectedCategories};
   return fetch('/api/save-subscription/', {
     method: 'POST',
     headers: {
@@ -1610,7 +1610,7 @@ function sendSubscriptionToBackEnd(subscription, selectedCategories) {
   .modal {
    
    top: 7%;
-   right: 70%;
+   right: 60%;
    bottom: 0;
    left: 0px;
    z-index: 10040;
