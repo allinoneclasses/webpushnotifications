@@ -1497,13 +1497,19 @@
 }
     
   function showCategoryPopUp(){
+     if (Notification.permission !== "denied"){
   document.getElementById('categoryPopUp').style.display = "block";
+}
 }
 
   function closeCategoryPopUp(){
     document.getElementById('categoryPopUp').style.display = "none";
+    showAlertForFuture();
   }
 
+  function showAlertForFuture(){
+    alert("You have blocked notifications from www.principal.com.\nIf you change your mind, please click on the padlock icon on the browser address bar and select Allow");
+  }
   function checkStatus(selectedCategories) {
   if (!('serviceWorker' in navigator)) {
   console.log('Service Worker isnt supported on this browser, disable or hide UI.');
@@ -1575,7 +1581,7 @@ function askPermission() {
   })
   .then(function(permissionResult) {
     if (permissionResult !== 'granted') {
-
+      showAlertForFuture();
       throw new Error('We weren\'t granted permission.');
     }
   });
