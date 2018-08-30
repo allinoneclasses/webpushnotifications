@@ -178,5 +178,3 @@ app.post('/api/save-subscription/', function (req, res) {
       res.send(JSON.stringify({ data: { success: true } }));
 });
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
-
-
