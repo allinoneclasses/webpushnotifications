@@ -149,7 +149,7 @@ function retrievefromDBBasedOn(req) {
     if(doc){
 console.log("finding data");
 console.log("data" , doc);
-triggerPushMsg(doc, req.message);
+triggerPushMsg(doc, req.message + ",," + req.titlee);
 }
 });
     console.log("data found");

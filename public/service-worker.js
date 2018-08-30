@@ -4,9 +4,12 @@ self.addEventListener('push', function(event) {
   } else {
     console.log('This push event has no data.');
   }
-  const title = 'Simple Title';
+  const str = event.data.text().split(",,");
+  console.log('Title ', str[1]);
+  console.log('body ', str[0]);
+  const title = str[1];
     const options = {
-      body: event.data.text(),
+      body: str[0],
       badge: '/principal-logo.png',
       icon: '/principal-logo.png'
     };
