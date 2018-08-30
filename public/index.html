@@ -1610,7 +1610,7 @@ function askPermission() {
 
 
 function sendSubscriptionToBackEnd(subscription, selectedCategories) {
-  var subs = {subscription:subscription, categories:selectedCategories};
+  var subs = {subscription:subscription, userPreferences: {categories: selectedCategories, appId: 'app1'}};
   return fetch('/api/save-subscription/', {
     method: 'POST',
     headers: {
