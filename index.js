@@ -7,8 +7,9 @@ var MongoClient = require("mongodb");
 
 const vapidKeys = {
   publicKey:
-  'BFxJHOL11hXZ6FlS27GI9R4idwWeT0R4QDlBeVLzculimGR9UE52iDKUn02-ez8-4ZFl5f2DqO-M19K8J_deYLc',
-  privateKey: 'mGHsTXQtXl2BSEMaZb3ZM01rfWMTNL9yfIWYmULtxS4'
+ // 'BFxJHOL11hXZ6FlS27GI9R4idwWeT0R4QDlBeVLzculimGR9UE52iDKUn02-ez8-4ZFl5f2DqO-M19K8J_deYLc',
+ 'BIY6zwhkwWk68u5Xzh_NYKwEzsEpOLsSSEdxDHLZWaGWEQOvAWpZ8iJJEqJof2y6BnIxNrPFo4v3tGO4wbkyywY',
+  privateKey: 'Flu-wiv4hfQy-astZyx9_pykQt_54QpQJWQqm3QoQVw'
 };
 
 var MONGOLAB_URI = "mongodb://test:test123@ds233452.mlab.com:33452/subscription-datastore";
@@ -22,10 +23,10 @@ app.get('/ashish', function (req, res) {
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json())
 app.get('/', function(req,res){
-	console.log(__dirname);
-	console.log('Inside app.get method');
-	res.sendFile('index.html');
-	console.log('sharma');
+  console.log(__dirname);
+  console.log('Inside app.get method');
+  res.sendFile('index.html');
+  console.log('sharma');
 })
 
 function savetoMongoDB(body) {
