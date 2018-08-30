@@ -62,7 +62,10 @@ console.log("objectId - " , objectId);
     db.close();
   });
 
+
   });
+
+
 
 });
  // res.send(JSON.stringify({ data: { success: true } }));
@@ -84,6 +87,7 @@ const triggerPushMsg = function(subscription, dataToSend) {
   })
   .catch((err) => {
     if (err.statusCode === 410) {
+     // return deleteSubscriptionFromDatabase(subscription._id);
     } else {
       console.log('Subscription is no longer valid: ', err);
     }
@@ -96,7 +100,9 @@ function retrievefromDB() {
     console.log(err);
   }
   const myAwesomeDB = db.db('subscription-datastore');
+
   console.log('Inside retrieve DB');
+ // var cursor  = collection('Subscription').find();
 
   var cursor = myAwesomeDB.collection('Subscription').find({});
   cursor.each(function(err, doc){
@@ -107,6 +113,12 @@ function retrievefromDB() {
     console.log("data found");
     }
   });
+ /* myAwesomeDB.collection('Subscription').find({}, function(err, res) {
+    if (err) throw err;
+    console.log(res);
+    console.log('got results');
+    db.close();
+  });*/
 });
 }
 
@@ -123,7 +135,15 @@ function retrievefromDBBasedOn(req) {
   cursor.each(function(err, doc){
     if(doc){
       console.log("finding data");
+      
+      // var data = JSON.parse(JSON.stringify(doc));
+      // console.log("Sending message to " + doc);
       console.log(doc.ref_id);
+      // var subscription;
+      // if(doc.subscription){
+        // subscription = doc.subscription;
+        // triggerPushMsg(doc, req.message);
+      // }
       var cursor = myAwesomeDB.collection('Subscription').find({"_id" : {"$in": [doc.ref_id]}});
   cursor.each(function(err, doc){
     if(doc){
@@ -135,6 +155,12 @@ triggerPushMsg(doc, req.message);
     console.log("data found");
     }
   });
+ /* myAwesomeDB.collection('Subscription').find({}, function(err, res) {
+    if (err) throw err;
+    console.log(res);
+    console.log('got results');
+    db.close();
+  });*/
 });
 }
 
@@ -176,5 +202,24 @@ app.post('/api/save-subscription/', function (req, res) {
 
     res.setHeader('Content-Type', 'application/json');
       res.send(JSON.stringify({ data: { success: true } }));
+
+ // res.send(JSON.stringify({ data: { success: true } }));
+ /* return routes.saveSubscriptionToDatabase(req.body)
+  .then(function(subscriptionId) {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify({ data: { success: true } }));
+  })
+  .catch(function(err) {
+    res.status(500);
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify({
+      error: {
+        id: 'unable-to-save-subscription',
+        message: 'The subscription was received but we were unable to save it to our database.'
+      }
+    }));
+  });*/
 });
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
+
+
