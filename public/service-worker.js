@@ -11,10 +11,20 @@ self.addEventListener('push', function(event) {
     const options = {
       body: str[0],
       badge: '/principal-logo.png',
-      icon: '/principal-logo.png'
+      icon: '/principal-logo.png',
+      requireInteraction: true
     };
 	const promiseChain = self.registration.showNotification(title,options);
 
   event.waitUntil(promiseChain);
  
+});
+
+self.addEventListener('notificationclick', function(event) {
+  const clickedNotification = event.notification;
+  clickedNotification.close();
+  
+  // Do something as the result of the notification click
+  const promiseChain = clients.openWindow('https://www.google.com');
+  event.waitUntil(promiseChain);
 });
