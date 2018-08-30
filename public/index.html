@@ -1506,8 +1506,7 @@
 function handlePermission() {
     return navigator.permissions
             .query({name:'notifications'})
-            .then(permissionQuery)
-            .catch(permissionError);
+            .then(permissionQuery);
 }
 
 function permissionQuery(result) {
