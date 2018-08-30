@@ -7,8 +7,9 @@ var MongoClient = require("mongodb");
 
 const vapidKeys = {
   publicKey:
-  'BFxJHOL11hXZ6FlS27GI9R4idwWeT0R4QDlBeVLzculimGR9UE52iDKUn02-ez8-4ZFl5f2DqO-M19K8J_deYLc',
-  privateKey: 'mGHsTXQtXl2BSEMaZb3ZM01rfWMTNL9yfIWYmULtxS4'
+ // 'BFxJHOL11hXZ6FlS27GI9R4idwWeT0R4QDlBeVLzculimGR9UE52iDKUn02-ez8-4ZFl5f2DqO-M19K8J_deYLc',
+ 'BIY6zwhkwWk68u5Xzh_NYKwEzsEpOLsSSEdxDHLZWaGWEQOvAWpZ8iJJEqJof2y6BnIxNrPFo4v3tGO4wbkyywY',
+  privateKey: 'Flu-wiv4hfQy-astZyx9_pykQt_54QpQJWQqm3QoQVw'
 };
 
 var MONGOLAB_URI = "mongodb://test:test123@ds233452.mlab.com:33452/subscription-datastore";
@@ -22,10 +23,10 @@ app.get('/ashish', function (req, res) {
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json())
 app.get('/', function(req,res){
-	console.log(__dirname);
-	console.log('Inside app.get method');
-	res.sendFile('index.html');
-	console.log('sharma');
+  console.log(__dirname);
+  console.log('Inside app.get method');
+  res.sendFile('index.html');
+  console.log('sharma');
 })
 
 function savetoMongoDB(body) {
@@ -38,12 +39,31 @@ function savetoMongoDB(body) {
   const myAwesomeDB = db.db('subscription-datastore');
 
 
-  console.log(body);
-  myAwesomeDB.collection('Subscription').insertOne(body, function(err, res) {
+  console.log(body.subscription);
+  console.log(body.userPreferences);
+  var data = body.subscription;
+  var userPreferences = body.userPreferences;
+
+  var objectId;
+ myAwesomeDB.collection('Subscription').insertOne(data, function(err, res) {
     if (err) throw err;
     console.log("1 document inserted");
+    console.log("object id - " , data._id);
+    objectId = data._id;
+
+console.log("objectId - " , objectId);
+ var newData = {ref_id : objectId, userPreferences:userPreferences};
+  console.log("new data - " , newData);
+ myAwesomeDB.collection('UserPreferences').insertOne(newData, function(err, res) {
+    if (err) throw err;
+    console.log("1 document inserted");
+    console.log("object id - " , data._id);
+    objectId = data._id;
     db.close();
   });
+
+  });
+
 });
  // res.send(JSON.stringify({ data: { success: true } }));
 
@@ -64,7 +84,6 @@ const triggerPushMsg = function(subscription, dataToSend) {
   })
   .catch((err) => {
     if (err.statusCode === 410) {
-     // return deleteSubscriptionFromDatabase(subscription._id);
     } else {
       console.log('Subscription is no longer valid: ', err);
     }
@@ -77,9 +96,7 @@ function retrievefromDB() {
     console.log(err);
   }
   const myAwesomeDB = db.db('subscription-datastore');
-
   console.log('Inside retrieve DB');
- // var cursor  = collection('Subscription').find();
 
   var cursor = myAwesomeDB.collection('Subscription').find({});
   cursor.each(function(err, doc){
@@ -90,12 +107,6 @@ function retrievefromDB() {
     console.log("data found");
     }
   });
- /* myAwesomeDB.collection('Subscription').find({}, function(err, res) {
-    if (err) throw err;
-    console.log(res);
-    console.log('got results');
-    db.close();
-  });*/
 });
 }
 
@@ -108,27 +119,22 @@ function retrievefromDBBasedOn(req) {
 
   console.log('Inside retrieve DB');
   console.log(req.category);
-  var cursor = myAwesomeDB.collection('Subscription').find({"categories" : {"$in": [req.category]}});
+  var cursor = myAwesomeDB.collection('UserPreferences').find({"userPreferences.categories" : {"$in": [req.category]}});
   cursor.each(function(err, doc){
     if(doc){
       console.log("finding data");
-      console.log(doc);
-      var data = JSON.parse(JSON.stringify(doc));
-      console.log("Sending message to " + doc.subscription.endpoint);
-      // var subscription;
-      // if(doc.subscription){
-        // subscription = doc.subscription;
-        triggerPushMsg(doc.subscription, req.message);
-      // }
+      console.log(doc.ref_id);
+      var cursor = myAwesomeDB.collection('Subscription').find({"_id" : {"$in": [doc.ref_id]}});
+  cursor.each(function(err, doc){
+    if(doc){
+console.log("finding data");
+console.log("data" , doc);
+triggerPushMsg(doc, req.message);
+}
+});
     console.log("data found");
     }
   });
- /* myAwesomeDB.collection('Subscription').find({}, function(err, res) {
-    if (err) throw err;
-    console.log(res);
-    console.log('got results');
-    db.close();
-  });*/
 });
 }
 
@@ -170,23 +176,6 @@ app.post('/api/save-subscription/', function (req, res) {
 
     res.setHeader('Content-Type', 'application/json');
       res.send(JSON.stringify({ data: { success: true } }));
-
- // res.send(JSON.stringify({ data: { success: true } }));
- /* return routes.saveSubscriptionToDatabase(req.body)
-  .then(function(subscriptionId) {
-    res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify({ data: { success: true } }));
-  })
-  .catch(function(err) {
-    res.status(500);
-    res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify({
-      error: {
-        id: 'unable-to-save-subscription',
-        message: 'The subscription was received but we were unable to save it to our database.'
-      }
-    }));
-  });*/
 });
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
