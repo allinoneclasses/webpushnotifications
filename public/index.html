@@ -1175,7 +1175,6 @@
     
     <div
       class="ds-content col-xs-12">
-          
           </div>
 
       </div>
@@ -1497,42 +1496,13 @@
 }
     
   function showCategoryPopUp(){
-    handlePermission();
-     //if (Notification.permission !== "denied"){
-  //document.getElementById('categoryPopUp').style.display = "block";
-//}
+  document.getElementById('categoryPopUp').style.display = "block";
 }
-
-function handlePermission() {
-    return navigator.permissions
-            .query({name:'notifications'})
-            .then(permissionQuery);
-}
-
-function permissionQuery(result) {
-    console.debug({result});
-    var newPrompt;
-
-    if (result.state == 'granted') {
-       console.log('granted');
-
-    } else if (result.state == 'prompt') {
-         document.getElementById('categoryPopUp').style.display = "block";
-
-    } else if (result.state == 'denied') {
-        console.log('naah');
-    }
-
-   }
 
   function closeCategoryPopUp(){
     document.getElementById('categoryPopUp').style.display = "none";
-    showAlertForFuture();
   }
 
-  function showAlertForFuture(){
-    alert("You have blocked notifications from www.principal.com.\nIf you change your mind, please click on the padlock icon on the browser address bar and select Allow");
-  }
   function checkStatus(selectedCategories) {
   if (!('serviceWorker' in navigator)) {
   console.log('Service Worker isnt supported on this browser, disable or hide UI.');
@@ -1604,7 +1574,7 @@ function askPermission() {
   })
   .then(function(permissionResult) {
     if (permissionResult !== 'granted') {
-      showAlertForFuture();
+
       throw new Error('We weren\'t granted permission.');
     }
   });
