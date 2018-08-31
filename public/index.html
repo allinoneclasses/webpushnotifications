@@ -1476,9 +1476,10 @@
     //handlePermission();
   }
  function readSubscription(){
+  alert("here");
   // We need the service worker registration to check for a subscription
 navigator.serviceWorker.ready.then(function (reg) {
-  alert("here");
+  alert("here1");
     // Do we already have a push message subscription?
     reg.pushManager.getSubscription()
         .then(function (subscription) {
