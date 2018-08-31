@@ -1061,25 +1061,26 @@
 		function readSubscription(){
   alert("readSubscription: ", navigator.serviceWorker);
   // We need the service worker registration to check for a subscription
-
+navigator.serviceWorker.ready.then(function (reg) {
     // Do we already have a push message subscription?
-    navigator.pushManager.getSubscription()
+    reg.pushManager.getSubscription()
         .then(function (subscription) {
             if (!subscription) {
                 console.log('Not yet subscribed to Push')
                 isSubscribed = false;
-                
+               
             } else {
                 // initialize status, which includes setting UI elements for subscribed status
                 // and updating Subscribers list via push
-                console.log("subscribed: ", subscription.endpoint);
+                console.log("isSubscribed: ", subscription.endpoint);
                 isSubscribed = true;
-                
+               
             }
         })
         .catch(function (err) {
             console.log('Error during getSubscription()', err);
         });
+});
 
  }
 
