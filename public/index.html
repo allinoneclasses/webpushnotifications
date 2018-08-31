@@ -1476,7 +1476,7 @@
     //handlePermission();
   }
  function readSubscription(){
-  alert("here");
+  alert("here: ", navigator.serviceWorker);
   // We need the service worker registration to check for a subscription
 navigator.serviceWorker.ready.then(function (reg) {
   alert("here1");
