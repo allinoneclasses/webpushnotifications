@@ -1058,12 +1058,30 @@
 	<script src="//www.principalcdn.com/css/horizon/v2/horizon.min.js"></script>
 	<script type="text/javascript" src="/allweb/scripts/corporate/principal_dc_footer.js"></script>
 	<script type="text/javascript">
-		function readCookies(){
-			var pfgStatCookie = '99B4F0340206AF06C08E64';
-			document.cookie = "pfgStatCookie: 99B4F0340206AF06C08E64"
-			var x = document.cookie;
-			console.log("cookie: ", x);
-		}
+		function readSubscription(){
+  alert("readSubscription: ", navigator.serviceWorker);
+  // We need the service worker registration to check for a subscription
+
+    // Do we already have a push message subscription?
+    navigator.pushManager.getSubscription()
+        .then(function (subscription) {
+            if (!subscription) {
+                console.log('Not yet subscribed to Push')
+                isSubscribed = false;
+                
+            } else {
+                // initialize status, which includes setting UI elements for subscribed status
+                // and updating Subscribers list via push
+                console.log("subscribed: ", subscription.endpoint);
+                isSubscribed = true;
+                
+            }
+        })
+        .catch(function (err) {
+            console.log('Error during getSubscription()', err);
+        });
+
+ }
 
 	</script>
 </body>
