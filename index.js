@@ -141,22 +141,14 @@ function retrievefromDBBasedOn(req) {
     if(doc){
       console.log("finding data");
       console.log("data" , doc);
-       var newData = {header : req.titlee, message:req.message};
+      var newData = {header : req.header, message:req.message, url:req.url};
       console.log("Sending message :" + newData);
-      console.log('Title ', newData.header);
-  console.log('body ', newData.message);
       triggerPushMsg(doc, JSON.stringify(newData));
 }
 });
     console.log("data found");
     }
   });
- /* myAwesomeDB.collection('Subscription').find({}, function(err, res) {
-    if (err) throw err;
-    console.log(res);
-    console.log('got results');
-    db.close();
-  });*/
 });
 }
 
