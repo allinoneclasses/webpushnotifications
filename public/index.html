@@ -1611,6 +1611,7 @@ function sendSubscriptionToBackEnd(subscription, selectedCategories) {
 
 // We need the service worker registration to check for a subscription
 navigator.serviceWorker.ready.then(function (reg) {
+  alert("here");
     // Do we already have a push message subscription?
     reg.pushManager.getSubscription()
         .then(function (subscription) {
