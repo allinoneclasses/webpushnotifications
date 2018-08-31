@@ -135,21 +135,17 @@ function retrievefromDBBasedOn(req) {
   cursor.each(function(err, doc){
     if(doc){
       console.log("finding data");
-      
-      // var data = JSON.parse(JSON.stringify(doc));
-      // console.log("Sending message to " + doc);
       console.log(doc.ref_id);
-      // var subscription;
-      // if(doc.subscription){
-        // subscription = doc.subscription;
-        // triggerPushMsg(doc, req.message);
-      // }
       var cursor = myAwesomeDB.collection('Subscription').find({"_id" : {"$in": [doc.ref_id]}});
   cursor.each(function(err, doc){
     if(doc){
-console.log("finding data");
-console.log("data" , doc);
-triggerPushMsg(doc, req.message);
+      console.log("finding data");
+      console.log("data" , doc);
+       var newData = {header : req.titlee, message:req.message};
+      console.log("Sending message :" + newData);
+      console.log('Title ', newData.header);
+  console.log('body ', newData.message);
+      triggerPushMsg(doc, JSON.stringify(newData));
 }
 });
     console.log("data found");
