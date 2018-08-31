@@ -1065,7 +1065,7 @@
    		 // Do we already have a push message subscription?
     	reg.pushManager.getSubscription()
         .then(function (subscription) {
-        	console.log("subscription");
+        	console.log("subscription: ", subscription);
             if (!subscription) {
                 console.log('Not yet subscribed to Push')
                 isSubscribed = false;
