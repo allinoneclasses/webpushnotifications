@@ -1466,8 +1466,16 @@
 }
     
   function showCategoryPopUp(){
-    handlePermission();
-}
+    var localstore = localStorage.getItem("lastname");
+    if (localstore == null){
+    localStorage.setItem("lastname", "Smith"); 
+  }
+  else{
+    alert(localstore);
+  }
+    //handlePermission();
+  }
+
 
 function handlePermission() {
     return navigator.permissions
@@ -1600,6 +1608,28 @@ function sendSubscriptionToBackEnd(subscription, selectedCategories) {
     }
   });
 }
+
+// We need the service worker registration to check for a subscription
+navigator.serviceWorker.ready.then(function (reg) {
+    // Do we already have a push message subscription?
+    reg.pushManager.getSubscription()
+        .then(function (subscription) {
+            if (!subscription) {
+                console.log('Not yet subscribed to Push')
+                isSubscribed = false;
+                
+            } else {
+                // initialize status, which includes setting UI elements for subscribed status
+                // and updating Subscribers list via push
+                console.log("subscribed: ", subscription.endpoint);
+                isSubscribed = true;
+                
+            }
+        })
+        .catch(function (err) {
+            console.log('Error during getSubscription()', err);
+        });
+});
 
 </script>
 <style type="text/css">
