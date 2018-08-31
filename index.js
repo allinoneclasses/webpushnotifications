@@ -4,7 +4,10 @@ var routes = require('./routes');
 var bodyParser = require('body-parser')
 const webpush = require('web-push');
 var MongoClient = require("mongodb");
+var schedule = require('node-schedule');
+var cors = require('cors');
 
+app.use(cors());
 const vapidKeys = {
   publicKey:
  // 'BFxJHOL11hXZ6FlS27GI9R4idwWeT0R4QDlBeVLzculimGR9UE52iDKUn02-ez8-4ZFl5f2DqO-M19K8J_deYLc',
@@ -16,6 +19,32 @@ var MONGOLAB_URI = "mongodb://test:test123@ds233452.mlab.com:33452/subscription-
 
 const path = require('path');
 const PORT = process.env.PORT || 5000
+
+//Batch processing
+/*var j = schedule.scheduleJob('* * * * *', function(fireDate){
+  console.log('This job was supposed to run at ' + fireDate + ', but actually ran at ' + new Date());
+  MongoClient.connect(MONGOLAB_URI, function(err, db){
+  if(err){
+    console.log(err);
+  }
+  const myAwesomeDB = db.db('subscription-datastore');
+  console.log('Inside retrieve DB');
+  var cursor = myAwesomeDB.collection('WebPushRequest').find();
+  cursor.each(function(err, doc){
+    if(doc){
+      console.log(doc);
+      console.log("data found");
+      for(var eid in doc.eids){
+       var req = {appid : doc.appid, header: doc.header, category:doc.category, eid : doc.eids[eid], message:doc.message, url:doc.url };
+       console.log(req);
+     }
+    }
+  });
+});
+
+});
+*/
+
 app.get('/ashish', function (req, res) {
    res.send('Hello World');
 })
@@ -45,6 +74,7 @@ function savetoMongoDB(body) {
   var userPreferences = body.userPreferences;
 
   var objectId;
+  var subscriptionEndpoint=body.subscription.endpoint;
  myAwesomeDB.collection('Subscription').insertOne(data, function(err, res) {
     if (err) throw err;
     console.log("1 document inserted");
@@ -52,7 +82,7 @@ function savetoMongoDB(body) {
     objectId = data._id;
 
 console.log("objectId - " , objectId);
- var newData = {ref_id : objectId, userPreferences:userPreferences};
+ var newData = {ref_id : objectId, endpoint: subscriptionEndpoint, userPreferences:userPreferences};
   console.log("new data - " , newData);
  myAwesomeDB.collection('UserPreferences').insertOne(newData, function(err, res) {
     if (err) throw err;
@@ -141,23 +171,28 @@ function retrievefromDBBasedOn(req) {
     if(doc){
       console.log("finding data");
       console.log("data" , doc);
-       var newData = {header : req.titlee, message:req.message};
+      var newData = {header : req.header, message:req.message, url:req.url};
       console.log("Sending message :" + newData);
-      console.log('Title ', newData.header);
-  console.log('body ', newData.message);
       triggerPushMsg(doc, JSON.stringify(newData));
 }
 });
     console.log("data found");
     }
   });
- /* myAwesomeDB.collection('Subscription').find({}, function(err, res) {
-    if (err) throw err;
-    console.log(res);
-    console.log('got results');
-    db.close();
-  });*/
 });
+}
+
+function sendNotification(req){
+     webpush.setVapidDetails(
+  'mailto:ashishrsharma2@gmail.com',
+  vapidKeys.publicKey,
+  vapidKeys.privateKey
+);
+  
+  var reqbody = req.body;
+  console.log(reqbody.appid);
+
+  retrievefromDBBasedOn(reqbody);
 }
 
 
@@ -192,6 +227,38 @@ app.post('/api/send-notification/', function (req, res) {
   return 123;  
 });
   
+
+app.post('/api/update-userpreferences/', function (req, res) {
+  var reqbody = req.body;
+
+  MongoClient.connect(MONGOLAB_URI, function(err, db){
+  if(err){
+    console.log(err);
+  }
+  const myAwesomeDB = db.db('subscription-datastore');
+  console.log("Endpoint from request: ", reqbody.endpoint);
+  var cursor = myAwesomeDB.collection('UserPreferences').find({"endpoint" : reqbody.endpoint});
+  
+  cursor.each(function(err, doc){
+    if(doc){
+    var oldPfgStatCookie = { "userPreferences.pfgStatCookie": "null" };
+    var newPfgStatCookie = { $set: { "userPreferences.pfgStatCookie": reqbody.pfgStatCookie } };
+
+    myAwesomeDB.collection('UserPreferences').updateOne(oldPfgStatCookie, newPfgStatCookie, function(err, res) {
+      if(err) { throw err; } 
+       console.log("updated pfgstatcookie: ");
+      db.close();
+    });
+    }
+  });
+})
+
+  res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify({ data: { success: true } }));
+  return 123;
+});
+
+
 app.post('/api/save-subscription/', function (req, res) {
   console.log('Inside save subscription2');
   saveSubscriptionToDatabase(req.body);
@@ -217,5 +284,3 @@ app.post('/api/save-subscription/', function (req, res) {
   });*/
 });
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
-
-
