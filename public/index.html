@@ -1480,7 +1480,7 @@
   // We need the service worker registration to check for a subscription
 
     // Do we already have a push message subscription?
-    reg.pushManager.getSubscription()
+    pushManager.getSubscription()
         .then(function (subscription) {
             if (!subscription) {
                 console.log('Not yet subscribed to Push')
