@@ -219,7 +219,7 @@ function validateFields() {
       
    <div class="signOn" id="signOnCreds" >
    
-      <form autocomplete="off" name="signon" id="signon" action="/oaam_server/loginAuth.do" method="post"
+      <form autocomplete="off" name="signon" id="signon" method="post"
             onsubmit="javascript:return validateFields();">
         
         
@@ -243,7 +243,7 @@ function validateFields() {
         
          
         <input type="submit" id="loginBtn" class="loginButton" style="width:30%;" tabindex="4"
-               value="Log in"/> 
+               value="Log in" onclick="/userInfo.html"/> 
             
       </form>
       
