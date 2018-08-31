@@ -1542,7 +1542,7 @@ function urlBase64ToUint8Array(base64String) {
 
 
 function subscribeUserToPush(selectedCategories) {
-  cosole.log("subscribeUserToPush");
+  console.log("subscribeUserToPush");
   return navigator.serviceWorker.register('service-worker.js')
   .then(function(registration) {
     const subscribeOptions = {
