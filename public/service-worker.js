@@ -4,12 +4,12 @@ self.addEventListener('push', function(event) {
   } else {
     console.log('This push event has no data.');
   }
-  const str = event.data.text().split(",,");
-  console.log('Title ', str[1]);
-  console.log('body ', str[0]);
-  const title = str[1];
+  const data = event.data.json();
+  console.log('Title ', data.header);
+  console.log('body ', data.message);
+  const title = data.header;
     const options = {
-      body: str[0],
+      body: data.message,
       badge: '/principal-logo.png',
       icon: '/principal-logo.png',
       requireInteraction: true
