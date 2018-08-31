@@ -1058,13 +1058,14 @@
 	<script src="//www.principalcdn.com/css/horizon/v2/horizon.min.js"></script>
 	<script type="text/javascript" src="/allweb/scripts/corporate/principal_dc_footer.js"></script>
 	<script type="text/javascript">
+
 		function readSubscription(){
-  alert("readSubscription: ", navigator.serviceWorker);
-  // We need the service worker registration to check for a subscription
-navigator.serviceWorker.ready.then(function (reg) {
-    // Do we already have a push message subscription?
-    reg.pushManager.getSubscription()
+ 		// We need the service worker registration to check for a subscription
+		navigator.serviceWorker.ready.then(function (reg) {
+   		 // Do we already have a push message subscription?
+    	reg.pushManager.getSubscription()
         .then(function (subscription) {
+        	console.log("subscription");
             if (!subscription) {
                 console.log('Not yet subscribed to Push')
                 isSubscribed = false;
