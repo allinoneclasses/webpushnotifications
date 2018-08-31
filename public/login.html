@@ -1,0 +1,371 @@
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+<html lang="en" >
+
+<head>
+
+<title>Sign On</title>
+<meta http-equiv="content-type" content="text/html;charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<link rel="stylesheet" type="text/css" href="https://www.principalcdn.com/css/horizon/v2/horizon.min.css">
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="https://www.principalcdn.com/css/edgeui/v1/oraclesignon.min.css">
+
+
+
+
+<link rel="stylesheet" type="text/css" href="https://www.principalcdn.com/css/oraclesignon/v2/oraclesignon.min.css">
+<!--[if lt IE 9]>
+    <script src="https://www.principalcdn.com/css/horizon/v2/ie8includes.min.js"></script>
+    <link href\="https\://www.principalcdn.com/css/horizon/v2/respond-proxy.html" id\="respond-proxy" rel\="respond-proxy" />\n    <link href\="/oaam_server/respond.proxy.gif" id\="respond-redirect" rel\="respond-redirect" />\n    <script src\="/oaam_server/respond.proxy.js"></script>
+<![endif]--> 
+
+<script type="text/javascript" charset="UTF-8" language="javascript" src="/oaam_server/js/oaam_uio.js"></script>
+
+
+<script type="text/javascript" charset="UTF-8">
+	loginIdRegExpr = /[^\s\\\<\>]/gi;
+	var app_messages = {
+							validateInvalidChars: "{0} has invalid characters.",
+							validateMinMaxLength: "Your answer should be {0}-{1} characters.",
+							validateDuplicateQuestion: "You can\u0027t select the same question again.",
+							validateEmptyAnswers: "Please enter the answer for question number(s)",
+							validateEmptyAnswer: "Please enter your answer.",
+							validateSelectQuestions: "Please select your questions.",
+							validatePasswordFormat: "Invalid password format.",
+							validatePasswordComplete: "Completed",
+							validatePasswordNotEntered: "Password not entered.",
+							validateChallenge: "Please verify your identity by providing an answer."
+						};
+</script>
+
+
+<!-- 11.1.2.3.0.OAAM_11.1.2.3.0_GENERIC_RELEASE : N/A : oam -->
+</head>
+
+
+
+<body>
+	
+
+
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+
+
+<nav class="navbar navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <a href="/http.www/index.shtm" class="logo-full-tier1">
+        <img src="https://www.principalcdn.com/css/horizon/v2/logo-company-name-white-padded.png" alt="Go to the Principal Financial Group(R) home page"  class="logo-full-white" width="160" height="64">
+       </a>
+    </div>
+  </div>
+</nav>
+
+
+	
+	<div class="bharosaPageBody">
+	
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12 col-lg-offset-3 col-lg-6">
+					
+						
+							
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script language="javascript" type="text/javascript" charset="UTF-8">
+    
+
+function validateFields() {
+	
+    var returnVal = true;
+    var msg = "";
+	var username = document.getElementById("userid");
+	var pass = document.getElementById("pass");
+	var userid = username.value;
+	var password = pass.value;
+	var employer = 2 == 5;
+	var forgotErac = 2 < 5;
+	
+	userid = trimstring(userid);
+	password = trimstring(password);
+	username.value = userid;
+	pass.value = password;
+	
+	var loginIdLbl = "Username";
+	var loginPassLbl = "Password";
+	
+	if (userid == '') {
+		alert("Please enter your username.");
+		username.focus();
+		return false;
+	}else if (password == ''){
+		alert("Please enter your password.");	
+		pass.focus();
+		return false;	
+	}
+	
+	if (!isValidLoginId(userid,loginIdLbl)) {
+		elem.focus();
+		return false;
+		}
+	
+	if(employer == true && forgotErac != true){
+		
+		var eracId = document.getElementById("eracId");
+		var erac = eracId.value;
+		
+		erac = trimstring(erac);
+		eracId.value = erac;
+		
+		if (erac == '') {
+			alert("Please enter your employer access code.");
+			eracId.focus();
+			return false;
+		}	
+	}
+
+    //Disable multiple submits
+	document.getElementById("loginBtn").disabled = true;
+    
+	return returnVal;	
+}
+
+
+  </script>
+
+    <div class="bharosaPageTitle">
+      Personal login
+    </div>
+
+    <div class="bharosaPageMessage">
+      
+    </div>
+    
+    
+
+    
+    
+   
+  
+   
+      
+   <div class="signOn" id="signOnCreds" >
+   
+      <form autocomplete="off" name="signon" id="signon" action="/oaam_server/loginAuth.do" method="post"
+            onsubmit="javascript:return validateFields();">
+        
+        
+        <input type="hidden" id="fk" name="fk" value="1166999_c2a6a996aeb72d4932c94314929b9be8afb59879668f340ae2c5b6c513733b07"/>
+        
+        <input type="hidden" id="clientOffset" name="clientOffset" />
+       
+        <ul class="credsList">
+<li>
+<label for="userid">Username</label>
+<input type="text" id="userid" name="userid" tabindex="1" maxlength="32" class="textInput" title="Enter Username" value="" autocomplete="off" /></li>
+<li><span class="fieldhintbelow"><a href="/https.secure05/enterprise/ForgotUsername/enteremail.xhtml?at=m">Forgot username?</a></span></li>
+<br />
+<li>
+<label for="pass">Password</label>
+<input type="password" id="pass" name="pass" tabindex="2" maxlength="32" class="textInput" title="Enter Password" value="" autocomplete="off" /></li>
+<ul class="links" id="linkList">
+<li><a href="forgotPassword.do" title="Forgot password?" >Forgot password?</a></li>
+</ul>
+<br /></ul>
+        
+         
+        <input type="submit" id="loginBtn" class="loginButton" style="width:30%;" tabindex="4"
+               value="Log in"/> 
+            
+      </form>
+      
+	  <p onBlur="javascript:moveFocusOut();">
+        
+	      New User? <a href="/https.secure05/enterprise/registration?at=m">Create an account</a>.
+	            
+	  </p>
+  </div>
+  
+       
+        
+    
+    <script language="javascript" type="text/javascript" charset="UTF-8">
+      
+      document.signon.userid.focus();
+      
+      var time = new Date();
+      var offset = (time.getTimezoneOffset() / 60 * -1);
+      document.getElementById("clientOffset").value = offset;
+      
+      function advancePage(){};
+      // -->
+    </script>
+    
+    
+      <script type="text/javascript" charset="UTF-8" language="javascript" src="js/oaam_fp.js"></script>
+<script language="JavaScript" type="text/javascript" charset="UTF-8">
+           <!--
+               var delim = "&";
+               var listDelim = ",";
+	            var fpstarted=false;
+	            var promptTime=6000;
+	            var toPrompt=true;
+	            var fpURL="jsFingerprint.do";
+               
+               fpStart();             //-->
+</script>
+
+						
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="nav-lower nav-lower-authenticated">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <nav>
+                    <ul class="nav nav-inline">
+					<li><a href="tel:800.986.3343"><i class="fa fa-phone"></i> 800-986-3343</a></li><li><a href="/http.www/individuals/help/help-individuals/help-online-account-access" target="_blank"><i class="fa fa-question-circle"></i> Login Help</a></li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</div>
+</section>
+<footer class="footer">
+	<section class="footer-row">
+		<nav>
+			<ul class="nav nav-inline">
+				<li><a href="/http.www/terms-of-use">Terms of Use</a></li>
+<li><a href="/http.www/products-services-disclosures">Disclosures</a></li>
+<li><a href="/http.www/privacy-policies">Privacy</a></li>
+<li><a href="/http.www/security-policies">Security</a></li>
+<li><a href="/http.www/about-us/our-company/policies/report-fraud-or-unethical-conduct">Report Fraud</a></li>
+<li><a href="/http.www/site-map">Site Map</a></li>
+<li><a href="/http.www/contact-us">Contact Us</a></li>
+			</ul>
+		</nav>
+		<div class="footer-legal">
+			<p>&copy; 2018, Principal Financial Services, Inc.</p>
+			<p>Securities offered through Principal Securities, Inc., member <a href="http://www.sipc.org/" title="SIPC">SIPC</a></p>
+		</div>
+	</section>
+</footer>
+<!-- Google Tag Manager -->
+
+<noscript>
+	<iframe src="//www.googletagmanager.com/ns.html?id=GTM-5L7952"
+		height="0" width="0" style="display: none; visibility: hidden"></iframe>
+</noscript>
+<script>
+	(function(w, d, s, l, i) {
+		w[l] = w[l] || [];
+		w[l].push({
+			'gtm.start' : new Date().getTime(),
+			event : 'gtm.js'
+		});
+		var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != 'dataLayer' ? '&l='
+				+ l
+				: '';
+		j.async = true;
+		j.src = '//www.googletagmanager.com/gtm.js?id=' + i + dl;
+		f.parentNode.insertBefore(j, f);
+	})(window, document, 'script', 'dataLayer', 'GTM-5L7952');
+</script>
+
+<!-- End Google Tag Manager -->
+
+<script language="javascript" type="text/javascript" charset="UTF-8">
+	$(function () {$('[data-toggle="tooltip"]').tooltip()})
+</script>
+
+	<script type="text/javascript" charset="UTF-8" language="javascript" src="https://www.principalcdn.com/css/horizon/v2/horizon.min.js"></script>
+</body>
+
+</html>
