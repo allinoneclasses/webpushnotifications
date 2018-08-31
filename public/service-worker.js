@@ -12,7 +12,11 @@ self.addEventListener('push', function(event) {
       body: data.message,
       badge: '/principal-logo.png',
       icon: '/principal-logo.png',
-      requireInteraction: true
+      requireInteraction: true,
+      data:{
+        url:data.url
+      }
+      
     };
 	const promiseChain = self.registration.showNotification(title,options);
 
@@ -23,8 +27,8 @@ self.addEventListener('push', function(event) {
 self.addEventListener('notificationclick', function(event) {
   const clickedNotification = event.notification;
   clickedNotification.close();
-  
+  console.log("Event notification - " , event.notification);
   // Do something as the result of the notification click
-  const promiseChain = clients.openWindow('https://www.google.com');
+  const promiseChain = clients.openWindow(event.notification.data.url);
   event.waitUntil(promiseChain);
 });
