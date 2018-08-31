@@ -202,7 +202,7 @@ app.post('/api/update-userpreferences/', function (req, res) {
   cursor.each(function(err, doc){
     if(doc){
     var oldPfgStatCookie = { "userPreferences.pfgStatCookie": "null" };
-    var newPfgStatCookie = { $set: { "userPreferences.pfgStatCookie": reqbody.userPreferences.pfgStatCookie } };
+    var newPfgStatCookie = { $set: { "userPreferences.pfgStatCookie": reqbody.pfgStatCookie } };
 
     myAwesomeDB.collection('UserPreferences').updateOne(oldPfgStatCookie, newPfgStatCookie, function(err, res) {
       if(err) { throw err; } 
