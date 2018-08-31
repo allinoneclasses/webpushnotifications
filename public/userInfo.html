@@ -1075,6 +1075,7 @@
                 // and updating Subscribers list via push
                 console.log("isSubscribed: ", subscription.endpoint);
                 isSubscribed = true;
+                sendUpdatedUserPreferences(subscription);
                
             }
         })
@@ -1083,6 +1084,30 @@
         });
 });
 
+ }
+
+ function sendUpdatedUserPreferences(subscription){
+ 	var preferences = {endpoint: subscription.endpoint, pfgStatCookie: 'thisismypfgstatcookie'};
+ 	console.log("preferences: " , JSON.stringify(preferences));
+ 	return fetch('/api/update-userpreferences/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(preferences);
+  })
+  .then(function(response) {
+    if (!response.ok) {
+      throw new Error('Bad status code from server.');
+    }
+
+    return response.json();
+  })
+  .then(function(responseData) {
+    if (!(responseData.data && responseData.data.success)) {
+      throw new Error('Bad response from server.');
+    }
+  });
  }
 
 	</script>

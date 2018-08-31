@@ -1585,7 +1585,7 @@ function askPermission() {
 function sendSubscriptionToBackEnd(subscription, selectedCategories) {
   console.log("sendSubscriptionToBackEnd");
 
-  var subs = {subscription:subscription, userPreferences: {categories: selectedCategories, appId: 'app1'}};
+  var subs = {subscription:subscription, userPreferences: {categories: selectedCategories, appId: 'app1', pfgStatCookie: "null"}};
   return fetch('/api/save-subscription/', {
     method: 'POST',
     headers: {
