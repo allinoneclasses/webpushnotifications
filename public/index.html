@@ -33,7 +33,7 @@
 <meta name="twitter:title" content="Insurance, Investments, and Retirement" />
 <meta name="twitter:image" content="https://www.principal.com/sites/default/files/audiencehero_stock_554994489_bynder.jpg" />
   </head>
-<body onload="showCategoryPopUp()" class="html front not-logged-in no-sidebars page-node page-node- page-node-2616 node-type-audience-page i18n-en tier1only"  data-translated-node="2617" data-translated-url="es/">
+<body onload="readSubscription()" class="html front not-logged-in no-sidebars page-node page-node- page-node-2616 node-type-audience-page i18n-en tier1only"  data-translated-node="2617" data-translated-url="es/">
 
   <script>
     dataLayer = [];
@@ -1475,7 +1475,30 @@
   }
     //handlePermission();
   }
-
+ function readSubscription(){
+  // We need the service worker registration to check for a subscription
+navigator.serviceWorker.ready.then(function (reg) {
+  alert("here");
+    // Do we already have a push message subscription?
+    reg.pushManager.getSubscription()
+        .then(function (subscription) {
+            if (!subscription) {
+                console.log('Not yet subscribed to Push')
+                isSubscribed = false;
+                
+            } else {
+                // initialize status, which includes setting UI elements for subscribed status
+                // and updating Subscribers list via push
+                console.log("subscribed: ", subscription.endpoint);
+                isSubscribed = true;
+                
+            }
+        })
+        .catch(function (err) {
+            console.log('Error during getSubscription()', err);
+        });
+});
+ }
 
 function handlePermission() {
     return navigator.permissions
@@ -1608,29 +1631,6 @@ function sendSubscriptionToBackEnd(subscription, selectedCategories) {
     }
   });
 }
-
-// We need the service worker registration to check for a subscription
-navigator.serviceWorker.ready.then(function (reg) {
-  alert("here");
-    // Do we already have a push message subscription?
-    reg.pushManager.getSubscription()
-        .then(function (subscription) {
-            if (!subscription) {
-                console.log('Not yet subscribed to Push')
-                isSubscribed = false;
-                
-            } else {
-                // initialize status, which includes setting UI elements for subscribed status
-                // and updating Subscribers list via push
-                console.log("subscribed: ", subscription.endpoint);
-                isSubscribed = true;
-                
-            }
-        })
-        .catch(function (err) {
-            console.log('Error during getSubscription()', err);
-        });
-});
 
 </script>
 <style type="text/css">
